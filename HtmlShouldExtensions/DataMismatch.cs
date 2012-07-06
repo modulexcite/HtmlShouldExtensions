@@ -8,6 +8,8 @@ namespace HtmlShouldExtensions
         public string Expected { get; set; }
         public string Actual { get; set; }
 
+        private readonly string ErrorMessageFormat = "Expected data-{0} to contain \"{1}\" but it {2}.";
+
         public DataMismatch(KeyValuePair<string, string> kvp, string actualValue)
         {
             this.DataKey = kvp.Key;
@@ -17,9 +19,8 @@ namespace HtmlShouldExtensions
 
         public string ErrorMessage()
         {
-            string format = "Expected data-{0} to contain \"{1}\" but it {2}.";
             var actual = DeriveDescriptionOfActualValue();
-            return string.Format(format, this.DataKey, this.Expected, actual);
+            return string.Format(this.ErrorMessageFormat, this.DataKey, this.Expected, actual);
         }
 
         private string DeriveDescriptionOfActualValue()
