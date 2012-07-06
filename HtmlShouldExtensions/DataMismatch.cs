@@ -18,8 +18,14 @@ namespace HtmlShouldExtensions
         public string ErrorMessage()
         {
             string format = "Expected data-{0} to contain \"{1}\" but it {2}.";
-            var actual = string.IsNullOrEmpty(this.Actual) ? "was empty" : string.Format("contained \"{0}\"", this.Actual);
+            var actual = DeriveDescriptionOfActualValue();
             return string.Format(format, this.DataKey, this.Expected, actual);
+        }
+
+        private string DeriveDescriptionOfActualValue()
+        {
+            var actual = string.IsNullOrEmpty(this.Actual) ? "was empty" : string.Format("contained \"{0}\"", this.Actual);
+            return actual;
         }
     }
 }
