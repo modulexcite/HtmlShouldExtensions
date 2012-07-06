@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>HtmlShouldExtensions</id>
+    <version>$version$</version>
+    <title>HtmlShouldExtensions</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/fourthhospitality/HtmlShouldExtensions</projectUrl>
+    <licenseUrl>http://www.opensource.org/licenses/MIT</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright 2012</copyright>
+    <tags>html assertions selectors css</tags>
+  </metadata>
+</package>
