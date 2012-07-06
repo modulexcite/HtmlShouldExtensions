@@ -1,4 +1,6 @@
-﻿using CsQuery;
+﻿using System;
+using System.Collections.Generic;
+using CsQuery;
 using HtmlShouldExtensions;
 using Should;
 using Xunit;
@@ -39,6 +41,35 @@ namespace HtmlShouldExtensionTests
         {
             var fragment = CQ.Create("<p class=\"para\">lorem ipsum</p>");
             Assert.DoesNotThrow(() => fragment.WithClass("para"));
+        }
+
+        [Fact]
+        public void WithData_passes_if_data_attributes_present()
+        {
+            var fragment = CQ.Create("<div data-foo=\"bar\", data-baz=\"42\"></div>");
+            Assert.DoesNotThrow(() => fragment.WithData(new Dictionary<string, string> { { "foo", "bar" }, { "baz", "42" } }));
+        }
+
+        [Fact]
+        public void WithData_fails_if_data_attributes_missing()
+        {
+            var fragment = CQ.Create("<div data-foo=\"bar\"></div>");
+            Assert.Throws<CQAssertionException>(() => fragment.WithData(new Dictionary<string, string> { { "foo", "bar" }, { "baz", "42" } }));
+        }
+
+        [Fact]
+        public void WithData_provides_an_error_message_showing_mismatched_data_attributes_on_failure()
+        {
+            var fragment = CQ.Create("<div data-foo=\"bar\"></div>");
+            var thrown = Assert.Throws<CQAssertionException>(() => fragment.WithData(new Dictionary<string, string>
+            {
+                { "foo", "baz" },
+                { "baz", "42" }
+            }));
+            var message = thrown.Message;
+            message.ShouldContain("Some data attributes were not present or had unexpected values.");
+            message.ShouldContain("Expected data-baz to contain \"42\" but it was empty." + Environment.NewLine);
+            message.ShouldContain("Expected data-foo to contain \"baz\" but it contained \"bar\".");
         }
     }
 }

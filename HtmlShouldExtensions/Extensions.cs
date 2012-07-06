@@ -1,4 +1,7 @@
-﻿using CsQuery;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CsQuery;
 using Should.Core.Assertions;
 using Should.Core.Exceptions;
 
@@ -41,6 +44,31 @@ namespace HtmlShouldExtensions
             {
                 throw new CQAssertionException(string.Format("CSS class {0} not found.", cssClass));
             }
+
+            return cq;
+        }
+
+        public static CQ WithData(this CQ cq, IDictionary<string, string> expectedData)
+        {
+            var dataMismatches = expectedData.Where(kvp => cq.DataRaw(kvp.Key) != kvp.Value)
+                                             .Select(kvp => new DataMismatch(kvp, cq.DataRaw(kvp.Key)))
+                                             .ToArray();
+            try
+            {
+                Assert.True(dataMismatches.Length == 0);
+            }
+            catch (TrueException)
+            {
+                StringBuilder errorMessage = new StringBuilder("Some data attributes were not present or had unexpected values.");
+                errorMessage.AppendLine();
+                foreach (var mismatch in dataMismatches)
+                {
+                    errorMessage.AppendLine(mismatch.ErrorMessage());
+                    errorMessage.AppendLine();
+                }
+                throw new CQAssertionException(errorMessage.ToString());
+            }
+
             return cq;
         }
     }
