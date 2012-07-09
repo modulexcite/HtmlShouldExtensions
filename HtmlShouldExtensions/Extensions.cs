@@ -59,6 +59,19 @@ namespace HtmlShouldExtensions
             throw new CQAssertionException(errorMessage);
         }
 
+        public static CQ NumberOfTimes(this CQ cq, int matchCount)
+        {
+            try
+            {
+                Assert.Equal(matchCount, cq.Length);
+            }
+            catch (EqualException e)
+            {
+                throw new FailedMatchException("Selector matched an unexpected number of times." + e.Message);
+            }
+            return cq;
+        }
+
         private static string CreateWithDataErrorMessage(DataMismatch[] dataMismatches)
         {
             StringBuilder errorMessage = new StringBuilder("Some data attributes were not present or had unexpected values.");
