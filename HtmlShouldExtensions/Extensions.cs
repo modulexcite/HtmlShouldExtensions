@@ -36,16 +36,12 @@ namespace HtmlShouldExtensions
 
         public static CQ WithClass(this CQ cq, string cssClass)
         {
-            try
+            if (cq.HasClass(cssClass))
             {
-                Assert.True(cq.HasClass(cssClass));
-            }
-            catch (TrueException)
-            {
-                throw new CQAssertionException(string.Format("CSS class {0} not found.", cssClass));
+                return cq;
             }
 
-            return cq;
+            throw new CQAssertionException(string.Format("CSS class {0} not found.", cssClass));
         }
 
         public static CQ WithData(this CQ cq, IDictionary<string, string> expectedData)
@@ -53,23 +49,20 @@ namespace HtmlShouldExtensions
             var dataMismatches = expectedData.Where(kvp => cq.DataRaw(kvp.Key) != kvp.Value)
                                              .Select(kvp => new DataMismatch(kvp, cq.DataRaw(kvp.Key)))
                                              .ToArray();
-            try
-            {
-                Assert.True(dataMismatches.Length == 0);
-            }
-            catch (TrueException)
-            {
-                StringBuilder errorMessage = new StringBuilder("Some data attributes were not present or had unexpected values.");
-                errorMessage.AppendLine();
-                foreach (var mismatch in dataMismatches)
-                {
-                    errorMessage.AppendLine(mismatch.ErrorMessage());
-                    errorMessage.AppendLine();
-                }
-                throw new CQAssertionException(errorMessage.ToString());
-            }
 
-            return cq;
+            if (dataMismatches.Length == 0)
+            {
+                return cq;
+            }
+            
+            StringBuilder errorMessage = new StringBuilder("Some data attributes were not present or had unexpected values.");
+            errorMessage.AppendLine();
+            foreach (var mismatch in dataMismatches)
+            {
+                errorMessage.AppendLine(mismatch.ErrorMessage());
+                errorMessage.AppendLine();
+            }
+            throw new CQAssertionException(errorMessage.ToString());
         }
     }
 }
