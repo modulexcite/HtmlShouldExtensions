@@ -12,7 +12,7 @@ namespace HtmlShouldExtensionTests
         public void ShouldMatchSelector_extension_passes_if_selector_matches_at_least_once()
         {
             string fragment = "<p>lorem ipsum</p>";
-            fragment.ShouldMatchSelector("p");
+            Assert.DoesNotThrow(() => fragment.ShouldMatchSelector("p"));
         }
 
         [Fact]
