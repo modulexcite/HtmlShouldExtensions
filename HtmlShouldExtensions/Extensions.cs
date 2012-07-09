@@ -54,7 +54,13 @@ namespace HtmlShouldExtensions
             {
                 return cq;
             }
-            
+
+            string errorMessage = CreateWithDataErrorMessage(dataMismatches);
+            throw new CQAssertionException(errorMessage);
+        }
+
+        private static string CreateWithDataErrorMessage(DataMismatch[] dataMismatches)
+        {
             StringBuilder errorMessage = new StringBuilder("Some data attributes were not present or had unexpected values.");
             errorMessage.AppendLine();
             foreach (var mismatch in dataMismatches)
@@ -62,7 +68,7 @@ namespace HtmlShouldExtensions
                 errorMessage.AppendLine(mismatch.ErrorMessage());
                 errorMessage.AppendLine();
             }
-            throw new CQAssertionException(errorMessage.ToString());
+            return errorMessage.ToString();
         }
     }
 }
