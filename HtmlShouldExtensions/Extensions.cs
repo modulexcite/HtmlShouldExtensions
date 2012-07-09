@@ -72,6 +72,16 @@ namespace HtmlShouldExtensions
             return cq;
         }
 
+        public static CQ Once(this CQ cq)
+        {
+            return NumberOfTimes(cq, 1);
+        }
+
+        public static CQ Twice(this CQ cq)
+        {
+            return NumberOfTimes(cq, 2);
+        }
+
         private static string CreateWithDataErrorMessage(DataMismatch[] dataMismatches)
         {
             StringBuilder errorMessage = new StringBuilder("Some data attributes were not present or had unexpected values.");

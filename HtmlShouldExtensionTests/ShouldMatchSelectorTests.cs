@@ -48,5 +48,19 @@ namespace HtmlShouldExtensionTests
             message.ShouldContain("Expected: 1");
             message.ShouldContain("Actual:   2");
         }
+
+        [Fact]
+        public void Once_convenience_method_passes_if_exactly_one_match()
+        {
+            string fragment = "<div><p>para1</p></div>";
+            Assert.DoesNotThrow(() => fragment.ShouldMatchSelector("p").Once());
+        }
+
+        [Fact]
+        public void Twice_convenience_method_passes_if_exactly_two_matches()
+        {
+            string fragment = "<div><p>para1</p><p>para2</p></div>";
+            Assert.DoesNotThrow(() => fragment.ShouldMatchSelector("p").Twice());
+        }
     }
 }
