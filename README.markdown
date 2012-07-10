@@ -17,6 +17,7 @@ var fragment = "<p class=\"para\">lorem ipsum</p>";
 fragment.ShouldMatchSelector("p").WithClass("para");
 ```
 
+See [the wiki](https://github.com/fourthhospitality/HtmlShouldExtensions/wiki) for further documentation.
 
 ## LICENSE
 
